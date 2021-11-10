@@ -1,0 +1,19 @@
+﻿@model MarvelCP.API.Data.Entities.Character
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1>Marvel Characters</h1>
+
+    <div style="overflow: hidden; margin-top: 50px;">
+        <div style="float: left; margin-right: 50px;">
+            <img src="@Model.Image" height="200" width="200" />
+        </div>
+        <div style="margin-left: 50px;">
+            <h2><a>@Model.Name</a></h2>
+            <p>@Model.Description</p>
+        </div>
+    </div>
+</div>
