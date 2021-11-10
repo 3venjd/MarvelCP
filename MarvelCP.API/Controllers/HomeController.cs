@@ -28,7 +28,7 @@ namespace MarvelCP.API.Controllers
         public IActionResult Index([FromServices] IConfiguration config)
         {
             Character personagem;
-
+            List<Character> resultadoCharacters = new List<Character>();
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Accept.Clear();
@@ -42,8 +42,9 @@ namespace MarvelCP.API.Controllers
 
                 HttpResponseMessage response = client.GetAsync(
                     config.GetSection("MarvelComicsAPI:BaseURL").Value +
-                    $"characters?ts={ts}&apikey={publicKey}&hash={hash}&" +
-                    $"name={Uri.EscapeUriString("Captain America")}").Result;
+                    $"characters?ts={ts}&apikey={publicKey}&hash={hash}").Result;
+
+                    //$"&"+$"name={Uri.EscapeUriString("Captain America")}").Result;
 
                 response.EnsureSuccessStatusCode();
                 string conteudo =
@@ -51,16 +52,25 @@ namespace MarvelCP.API.Controllers
 
                 dynamic resultado = JsonConvert.DeserializeObject(conteudo);
 
-                personagem = new Character();
-                personagem.Name = resultado.data.results[0].name;
-                personagem.Description = resultado.data.results[0].description;
-                personagem.Image = resultado.data.results[0].thumbnail.path + "." +
-                    resultado.data.results[0].thumbnail.extension;
+                
+                //personagem = new Character();
+
+                for (int i = 0; i < resultado.data.results.Count; i++)
+                {
+                    personagem = new Character();
+                    personagem.Name = resultado.data.results[i].name;
+                    personagem.Description = resultado.data.results[i].description;
+                    personagem.Image = resultado.data.results[i].thumbnail.path + "." +
+                        resultado.data.results[i].thumbnail.extension;
+
+                    resultadoCharacters.Add(personagem);
+                }
+                
                 
 
             }
 
-            return View(personagem);
+            return View(resultadoCharacters);
             //return View();
         }
 

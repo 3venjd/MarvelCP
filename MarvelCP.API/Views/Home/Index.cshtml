@@ -1,19 +1,45 @@
-﻿@model MarvelCP.API.Data.Entities.Character
+﻿@model IEnumerable<MarvelCP.API.Data.Entities.Character>
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
+</div>
     <h1>Marvel Characters</h1>
 
-    <div style="overflow: hidden; margin-top: 50px;">
-        <div style="float: left; margin-right: 50px;">
-            <img src="@Model.Image" height="200" width="200" />
-        </div>
-        <div style="margin-left: 50px;">
-            <h2><a>@Model.Name</a></h2>
-            <p>@Model.Description</p>
-        </div>
-    </div>
-</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Image
+            </th>
+            <th>
+                Description
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>
+                    @Html.DisplayFor(x => item.Name)
+                </th>
+                <th>
+                    <img src="@Url.Content(item.Image)" style="height:100px;width:100px;border-top-right-radius:50px;border-top-left-radius:25px;border-color:blue;border-width:5px;" />
+                </th>
+                <th>
+                    @Html.DisplayFor(x => item.Description)
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+    
+
+  
+
